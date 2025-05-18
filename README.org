@@ -1,12 +1,12 @@
 #+TITLE: Galileo
 #+AUTHOR: xtt28
 
-* Project Description
+** Project Description
 
 An intelligent AI assistant that runs on your computer and can help you with
 day-to-day tasks, including browsing, searching files, and more.
 
-* License
+** License
 
 GNU General Public License, v3.0 or later. See the LICENSE.md file for more
 details.
