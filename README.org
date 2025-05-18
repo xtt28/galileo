@@ -1,5 +1,5 @@
-#+TITLE Galileo
-#+AUTHOR xtt28
+#+TITLE: Galileo
+#+AUTHOR: xtt28
 
 * Project Description
 
