@@ -13,7 +13,7 @@ const ConversationModel = openai.ChatModelGPT4oMini
 type Conversation struct {
 	OpenAIClient openai.Client
 	Context context.Context
-	Messages []openai.ChatCompletionMessageParamUnion
+	Param openai.ChatCompletionNewParams
 }
 
 func NewConversation(apiKey string) Conversation {
@@ -24,27 +24,27 @@ func NewConversation(apiKey string) Conversation {
 	conversation := Conversation{
 		client,
 		context.Background(),
-		[]openai.ChatCompletionMessageParamUnion{
-			openai.SystemMessage("You are a helpful chatbot."),
+		openai.ChatCompletionNewParams{
+			Messages: []openai.ChatCompletionMessageParamUnion{
+				openai.DeveloperMessage("You are a helpful assistant."),
+			},
+			Seed: openai.Int(1),
+			Model: ConversationModel,
 		},
 	}
 	return conversation
 }
 
-func (c *Conversation) SendMessage(prompt string) {
-	message := openai.UserMessage(prompt)
-	c.Messages = append(c.Messages, message)
-	
-	params := openai.ChatCompletionNewParams{
-		Messages: c.Messages,
-		Model: ConversationModel,
-	}
-	
-	completion, err := c.OpenAIClient.Chat.Completions.New(c.Context, params)
+func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion) {
+	c.Param.Messages = append(c.Param.Messages, prompt)
+
+	completion, err := c.OpenAIClient.Chat.Completions.New(c.Context, c.Param)
 	if err != nil {
+		// TODO: Improve error handling.
 		log.Fatal(err)
 	}
 
-	response := completion.Choices[0].Message.ToParam()
-	c.Messages = append(c.Messages, response)
+	// TODO: Handle tool calls.
+
+	c.Param.Messages = append(c.Param.Messages, completion.Choices[0].Message.ToParam())
 }
