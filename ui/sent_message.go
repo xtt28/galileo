@@ -7,9 +7,9 @@ import (
 	"github.com/openai/openai-go"
 )
 
-func CreateSentMessage(msgData openai.Message) (vbox *fyne.Container) {
+func CreateSentMessage(role openai.MessageRole, content string) (vbox *fyne.Container) {
 	var senderText string
-	if msgData.Role == openai.MessageRoleAssistant {
+	if role == openai.MessageRoleAssistant {
 		senderText = "Galileo"
 	} else {
 		senderText = "You"
@@ -18,7 +18,7 @@ func CreateSentMessage(msgData openai.Message) (vbox *fyne.Container) {
 	senderLabel := widget.NewLabel(senderText)
 	senderLabel.TextStyle.Bold = true
 
-	messageContentLabel := widget.NewLabel(msgData.Content[0].Text.Value)
+	messageContentLabel := widget.NewLabel(content)
 	
 	vbox = container.NewVBox(senderLabel, messageContentLabel)
 	return
