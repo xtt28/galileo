@@ -35,7 +35,7 @@ func NewConversation(apiKey string) Conversation {
 	return conversation
 }
 
-func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion) {
+func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion) string {
 	c.Param.Messages = append(c.Param.Messages, prompt)
 
 	completion, err := c.OpenAIClient.Chat.Completions.New(c.Context, c.Param)
@@ -47,4 +47,5 @@ func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion
 	// TODO: Handle tool calls.
 
 	c.Param.Messages = append(c.Param.Messages, completion.Choices[0].Message.ToParam())
+	return completion.Choices[0].Message.Content
 }
