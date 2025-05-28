@@ -10,14 +10,14 @@ import (
 )
 
 type renderableMessage struct {
-	sender openai.MessageRole
+	sender  openai.MessageRole
 	content string
 }
 
 type MainWindow struct {
-	Window fyne.Window
+	Window       fyne.Window
 	Conversation ai.Conversation
-	Messages []renderableMessage
+	Messages     []renderableMessage
 }
 
 func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
@@ -34,7 +34,7 @@ func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
 }
 
 func (mw *MainWindow) AddWidgets() {
-		msgList := widget.NewList(
+	msgList := widget.NewList(
 		func() int {
 			return len(mw.Messages)
 		},
@@ -57,19 +57,22 @@ func (mw *MainWindow) AddWidgets() {
 
 	msgInput := widget.NewEntry()
 	msgInput.SetPlaceHolder("Enter a message...")
-	
+
 	msgSendBtn := widget.NewButtonWithIcon("Send", theme.Icon(theme.IconNameMailSend), func() {
 		msg := msgInput.Text
 		mw.Messages = append(mw.Messages, renderableMessage{openai.MessageRoleUser, msg})
 		msgList.Refresh()
 		msgInput.SetText("")
 
-		response := mw.Conversation.SendMessage(openai.UserMessage(msg))
-		mw.Messages = append(mw.Messages, renderableMessage{openai.MessageRoleAssistant, response})
-		msgList.Refresh()
+		fyne.Do(func() {
+			response := mw.Conversation.SendMessage(openai.UserMessage(msg))
+			mw.Messages = append(mw.Messages, renderableMessage{openai.MessageRoleAssistant, response})
+			msgList.Refresh()
+		})
+
 	})
 	msgSendBtn.Importance = widget.HighImportance
-	
+
 	msgSendPane := container.NewBorder(nil, nil, nil, msgSendBtn, msgInput)
 	msgSendPane.Resize(fyne.NewSize(msgSendPane.Size().Width, 50))
 

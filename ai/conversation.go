@@ -12,8 +12,8 @@ const ConversationModel = openai.ChatModelGPT4oMini
 
 type Conversation struct {
 	OpenAIClient openai.Client
-	Context context.Context
-	Param openai.ChatCompletionNewParams
+	Context      context.Context
+	Param        openai.ChatCompletionNewParams
 }
 
 func NewConversation(apiKey string) Conversation {
@@ -28,7 +28,7 @@ func NewConversation(apiKey string) Conversation {
 			Messages: []openai.ChatCompletionMessageParamUnion{
 				openai.DeveloperMessage("You are a helpful assistant."),
 			},
-			Seed: openai.Int(1),
+			Seed:  openai.Int(1),
 			Model: ConversationModel,
 		},
 	}

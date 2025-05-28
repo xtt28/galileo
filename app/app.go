@@ -7,10 +7,10 @@ import (
 )
 
 func Run() {
-	conf := config.ReadConfig()	
+	conf := config.ReadConfig()
 
 	a := app.New()
-	
+
 	win := ui.CreateMainWindow(conf.OpenAIKey, a)
 	win.Window.ShowAndRun()
 }
