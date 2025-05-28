@@ -10,14 +10,15 @@ import (
 )
 
 type renderableMessage struct {
-	sender  openai.MessageRole
+	sender openai.MessageRole
 	content string
 }
 
 type MainWindow struct {
-	Window       fyne.Window
+	Window fyne.Window
 	Conversation ai.Conversation
-	Messages     []renderableMessage
+	Messages []renderableMessage
+	msgBox *fyne.Container
 }
 
 func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
@@ -25,7 +26,7 @@ func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
 	w.Resize(fyne.Size{Width: 300, Height: 600})
 
 	conv := ai.NewConversation(apiKey)
-	mw := MainWindow{w, conv, []renderableMessage{renderableMessage{openai.MessageRoleAssistant, "hi there"}}}
+	mw := MainWindow{w, conv, []renderableMessage{}, nil}
 	mw.AddWidgets()
 
 	w.ShowAndRun()
@@ -33,46 +34,53 @@ func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
 	return mw
 }
 
+func (mw *MainWindow) AppendMessage(msg renderableMessage) {
+	rendered := CreateSentMessage(msg.sender, msg.content)
+	mw.Messages = append(mw.Messages, msg)
+	mw.msgBox.Add(rendered)
+	mw.msgBox.Refresh()
+}
+
 func (mw *MainWindow) AddWidgets() {
-	msgList := widget.NewList(
-		func() int {
-			return len(mw.Messages)
-		},
-		func() fyne.CanvasObject {
-			return CreateSentMessage("", "")
-		},
-		func(i widget.ListItemID, o fyne.CanvasObject) {
-			msg := mw.Messages[i]
-			var senderText string
-			if msg.sender == openai.MessageRoleAssistant {
-				senderText = "Galileo"
-			} else {
-				senderText = "You"
-			}
-			o.(*fyne.Container).Objects[0].(*widget.Label).SetText(senderText)
-			o.(*fyne.Container).Objects[1].(*widget.Label).SetText(msg.content)
-		},
-	)
-	msgScroll := container.NewScroll(msgList)
+		// msgList := widget.NewList(
+		// func() int {
+		// 	return len(mw.Messages)
+		// },
+		// func() fyne.CanvasObject {
+		// 	return CreateSentMessage("", "")
+		// },
+		// func(i widget.ListItemID, o fyne.CanvasObject) {
+		// 	msg := mw.Messages[i]
+		// 	var senderText string
+		// 	if msg.sender == openai.MessageRoleAssistant {
+		// 		senderText = "Galileo"
+		// 	} else {
+		// 		senderText = "You"
+		// 	}
+		// 	o.(*fyne.Container).Objects[0].(*widget.Label).SetText(senderText)
+		// 	o.(*fyne.Container).Objects[1].(*widget.Label).SetText(msg.content)
+		// },
+		// )
+	mw.msgBox = container.NewVBox()
+	msgScroll := container.NewScroll(mw.msgBox)
+	mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, "Hi there."})
 
 	msgInput := widget.NewEntry()
 	msgInput.SetPlaceHolder("Enter a message...")
-
+	
 	msgSendBtn := widget.NewButtonWithIcon("Send", theme.Icon(theme.IconNameMailSend), func() {
 		msg := msgInput.Text
-		mw.Messages = append(mw.Messages, renderableMessage{openai.MessageRoleUser, msg})
-		msgList.Refresh()
+		mw.AppendMessage(renderableMessage{openai.MessageRoleUser, msg})
 		msgInput.SetText("")
 
 		fyne.Do(func() {
 			response := mw.Conversation.SendMessage(openai.UserMessage(msg))
-			mw.Messages = append(mw.Messages, renderableMessage{openai.MessageRoleAssistant, response})
-			msgList.Refresh()
+			mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, response})
 		})
-
+		
 	})
 	msgSendBtn.Importance = widget.HighImportance
-
+	
 	msgSendPane := container.NewBorder(nil, nil, nil, msgSendBtn, msgInput)
 	msgSendPane.Resize(fyne.NewSize(msgSendPane.Size().Width, 50))
 
