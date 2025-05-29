@@ -4,8 +4,10 @@ import (
 	"context"
 	"log"
 
+	"fyne.io/fyne/v2"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
+	"github.com/xtt28/galileo/agent"
 )
 
 const ConversationModel = openai.ChatModelGPT4oMini
@@ -30,12 +32,13 @@ func NewConversation(apiKey string) Conversation {
 			},
 			Seed:  openai.Int(1),
 			Model: ConversationModel,
+			Tools: agent.GetToolsList(),
 		},
 	}
 	return conversation
 }
 
-func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion) string {
+func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMessageParamUnion) string {
 	c.Param.Messages = append(c.Param.Messages, prompt)
 
 	completion, err := c.OpenAIClient.Chat.Completions.New(c.Context, c.Param)
@@ -44,8 +47,22 @@ func (c *Conversation) SendMessage(prompt openai.ChatCompletionMessageParamUnion
 		log.Fatal(err)
 	}
 
-	// TODO: Handle tool calls.
+	choice := completion.Choices[0]
+	param := choice.Message.ToParam()
+	content := completion.Choices[0].Message.Content
+	c.Param.Messages = append(c.Param.Messages, param)
+	
+	if len(choice.Message.ToolCalls) > 0 {
+		for _, call := range choice.Message.ToolCalls {
+			fun, ok := agent.FunctionForName(call.Function.Name)
+			if !ok {
+				panic("no function with name " + call.Function.Name)
+			}
+			toolRes := fun.Invoke(w, call)
+			content += "\n" + c.SendMessage(w, toolRes)
+		}
+	}
+	
 
-	c.Param.Messages = append(c.Param.Messages, completion.Choices[0].Message.ToParam())
-	return completion.Choices[0].Message.Content
+	return content
 }

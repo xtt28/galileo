@@ -55,7 +55,7 @@ func (mw *MainWindow) AddWidgets() {
 		msgInput.SetText("")
 
 		go func() {
-			response := mw.Conversation.SendMessage(openai.UserMessage(msg))
+			response := mw.Conversation.SendMessage(mw.Window, openai.UserMessage(msg))
 			fyne.Do(func() {
 				mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, response})
 			})
