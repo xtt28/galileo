@@ -13,7 +13,7 @@ func createMessageBoxFunc() AgentFunction {
 		var args map[string]any
 		json.Unmarshal([]byte(call.Function.Arguments), &args)
 		
-		dialog.ShowInformation("Hi", args["message"].(string), w)
+		dialog.ShowInformation("", args["message"].(string), w)
 		return openai.ToolMessage(`{"success":true}`, call.ID)
 	}
 
