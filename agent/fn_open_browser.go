@@ -33,23 +33,23 @@ func createOpenBrowserFunc() AgentFunction {
 		json.Unmarshal([]byte(call.Function.Arguments), &args)
 		url := args["url"].(string)
 		openBrowserToUrl(url)
-		
+
 		return openai.ToolMessage(`{"success":true}`, call.ID)
 	}
 
 	param := openai.FunctionDefinitionParam{
-		Name: "open_browser",
-		Strict: openai.Bool(true),
+		Name:        "open_browser",
+		Strict:      openai.Bool(true),
 		Description: openai.String("Opens the user's browser to the given URL."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
 			"properties": map[string]any{
 				"url": map[string]any{"type": "string"},
 			},
-			"required": []string{"url"},
+			"required":             []string{"url"},
 			"additionalProperties": false,
 		},
 	}
-	
+
 	return AgentFunction{param, invoke}
 }

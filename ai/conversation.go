@@ -51,7 +51,7 @@ func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMe
 	param := choice.Message.ToParam()
 	content := completion.Choices[0].Message.Content
 	c.Param.Messages = append(c.Param.Messages, param)
-	
+
 	if len(choice.Message.ToolCalls) > 0 {
 		for _, call := range choice.Message.ToolCalls {
 			fun, ok := agent.FunctionForName(call.Function.Name)
@@ -62,7 +62,6 @@ func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMe
 			content += "\n" + c.SendMessage(w, toolRes)
 		}
 	}
-	
 
 	return content
 }

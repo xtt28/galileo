@@ -9,7 +9,7 @@ var registeredFunctions = make(map[string]AgentFunction)
 
 type AgentFunction struct {
 	APIParams openai.FunctionDefinitionParam
-	Invoke func(fyne.Window, openai.ChatCompletionMessageToolCall) openai.ChatCompletionMessageParamUnion
+	Invoke    func(fyne.Window, openai.ChatCompletionMessageToolCall) openai.ChatCompletionMessageParamUnion
 }
 
 func FunctionForName(name string) (fn AgentFunction, ok bool) {
@@ -25,15 +25,16 @@ func GetToolsList() []openai.ChatCompletionToolParam {
 	sl := []openai.ChatCompletionToolParam{}
 	for _, v := range registeredFunctions {
 		param := openai.ChatCompletionToolParam{
-			Type: "function",
+			Type:     "function",
 			Function: v.APIParams,
 		}
 		sl = append(sl, param)
 	}
 	return sl
 }
-	
+
 func RegisterAllFunctions() {
 	registerFunction("message_box", createMessageBoxFunc())
 	registerFunction("open_browser", createOpenBrowserFunc())
+	registerFunction("get_weather", createWeatherFunc())
 }

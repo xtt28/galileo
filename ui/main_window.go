@@ -10,15 +10,15 @@ import (
 )
 
 type renderableMessage struct {
-	sender openai.MessageRole
+	sender  openai.MessageRole
 	content string
 }
 
 type MainWindow struct {
-	Window fyne.Window
+	Window       fyne.Window
 	Conversation ai.Conversation
-	Messages []renderableMessage
-	msgBox *fyne.Container
+	Messages     []renderableMessage
+	msgBox       *fyne.Container
 }
 
 func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
@@ -48,7 +48,7 @@ func (mw *MainWindow) AddWidgets() {
 
 	msgInput := widget.NewEntry()
 	msgInput.SetPlaceHolder("Enter a message...")
-	
+
 	msgSendBtn := widget.NewButtonWithIcon("Send", theme.Icon(theme.IconNameMailSend), func() {
 		msg := msgInput.Text
 		mw.AppendMessage(renderableMessage{openai.MessageRoleUser, msg})
@@ -59,10 +59,10 @@ func (mw *MainWindow) AddWidgets() {
 			fyne.Do(func() {
 				mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, response})
 			})
-		}()	
+		}()
 	})
 	msgSendBtn.Importance = widget.HighImportance
-	
+
 	msgSendPane := container.NewBorder(nil, nil, nil, msgSendBtn, msgInput)
 	msgSendPane.Resize(fyne.NewSize(msgSendPane.Size().Width, 50))
 

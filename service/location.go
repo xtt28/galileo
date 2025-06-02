@@ -5,13 +5,13 @@ import (
 	"net/http"
 )
 
-const ipAPIEndpoint = "https://ipapi.co/json"
+const ipAPIEndpoint = "http://ip-api.com/json"
 
 var userLocation *Location
 
 type Location struct {
-	Latitude float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
+	Latitude  float64 `json:"lat"`
+	Longitude float64 `json:"lon"`
 }
 
 func GetLocation() (Location, error) {
@@ -23,6 +23,7 @@ func GetLocation() (Location, error) {
 	if err != nil {
 		return Location{}, err
 	}
+	defer res.Body.Close()
 
 	dec := json.NewDecoder(res.Body)
 	var data Location
@@ -32,5 +33,6 @@ func GetLocation() (Location, error) {
 		return Location{}, err
 	}
 
+	userLocation = &data
 	return data, nil
 }
