@@ -20,10 +20,13 @@ func CreateSentMessage(role openai.MessageRole, content string) (vbox *fyne.Cont
 	senderLabel := widget.NewLabel(senderText)
 	senderLabel.TextStyle.Bold = true
 
-	messageContentLabel := widget.NewLabel(content)
-	messageContentLabel.Wrapping = fyne.TextWrapWord
+	messageContent := widget.NewRichTextFromMarkdown(content)
+	messageContent.Wrapping = fyne.TextWrapWord
 
-	vbox = container.NewVBox(senderLabel, messageContentLabel)
+	// messageContentLabel := widget.NewLabel(content)
+	// messageContentLabel.Wrapping = fyne.TextWrapWord
+
+	vbox = container.NewVBox(senderLabel, messageContent)
 	fmt.Println(vbox.Size().Height)
 	return
 }

@@ -35,6 +35,7 @@ func GetToolsList() []openai.ChatCompletionToolParam {
 
 func RegisterAllFunctions() {
 	registerFunction("message_box", createMessageBoxFunc())
-	registerFunction("open_browser", createOpenBrowserFunc())
+	registerFunction("open", createOpenFunc())
 	registerFunction("get_weather", createWeatherFunc())
+	registerFunction("get_apps", createGetProgramsFunc())
 }
