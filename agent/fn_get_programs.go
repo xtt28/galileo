@@ -64,8 +64,8 @@ func createGetProgramsFunc() AgentFunction {
 		Strict:      openai.Bool(true),
 		Description: openai.String("Gets a list of apps installed on the user's computer as a list of paths to shortcut files on the computer."),
 		Parameters: openai.FunctionParameters{
-			"type": "object",
-			"properties": map[string]any{},
+			"type":                 "object",
+			"properties":           map[string]any{},
 			"additionalProperties": false,
 		},
 	}

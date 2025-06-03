@@ -8,7 +8,7 @@ import (
 	"github.com/zapling/yr.no-golang-client/locationforecast"
 )
 
-var yrNoClient = client.NewYrClient(http.DefaultClient, "io.github.xtt28.galileo");
+var yrNoClient = client.NewYrClient(http.DefaultClient, "io.github.xtt28.galileo")
 
 type forecastCache struct {
 	data   *locationforecast.GeoJson

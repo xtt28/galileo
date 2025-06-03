@@ -19,7 +19,7 @@ func main() {
 	}
 	temp := forecast.Properties.Timeseries[0].Data.Instant.Details.AirTemperature
 	fmt.Println(*temp)
-	
+
 	fmt.Printf("%v\n", loc)
 	app.Run()
 }

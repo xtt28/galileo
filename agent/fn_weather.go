@@ -24,7 +24,7 @@ func createWeatherFunc() AgentFunction {
 		if err != nil {
 			log.Println("could not marshal weather to JSON")
 			log.Println(err)
-			return openai.ToolMessage(`{"success":false,"message": "internal error occurred"}`, call.ID)			
+			return openai.ToolMessage(`{"success":false,"message": "internal error occurred"}`, call.ID)
 		}
 		return openai.ToolMessage(string(resJson), call.ID)
 	}
@@ -34,8 +34,8 @@ func createWeatherFunc() AgentFunction {
 		Strict:      openai.Bool(true),
 		Description: openai.String("Gets the current weather forecast at the user's location."),
 		Parameters: openai.FunctionParameters{
-			"type": "object",
-			"properties": map[string]any{},
+			"type":                 "object",
+			"properties":           map[string]any{},
 			"additionalProperties": false,
 		},
 	}
