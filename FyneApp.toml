@@ -1,0 +1,8 @@
+Website = "https://github.com/xtt28/galileo"
+
+[Details]
+Icon = "logo.png"
+Name = "Galileo"
+ID = "io.github.xtt28.galileo"
+Version = "1.0.0"
+Build = 1
