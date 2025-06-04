@@ -38,4 +38,5 @@ func RegisterAllFunctions() {
 	registerFunction("open", createOpenFunc())
 	registerFunction("get_weather", createWeatherFunc())
 	registerFunction("get_apps", createGetProgramsFunc())
+	registerFunction("get_files", createShowFilesFunc())
 }

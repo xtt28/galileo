@@ -11,39 +11,20 @@ import (
 	"github.com/openai/openai-go"
 )
 
-// https://gist.github.com/sevkin/9798d67b2cb9d07cb05f89f14ba682f8
-func getUserApps() ([]string, error) {
-	var folders []string
-	appFiles := []string{}
+func getProgramShortcutPaths() []string {
 	switch runtime.GOOS {
 	case "windows":
-		folders = []string{
+		return []string{
 			filepath.Join(os.Getenv("PROGRAMDATA"), "Microsoft", "Windows", "Start Menu", "Programs"),
 			filepath.Join(os.Getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs"),
 		}
 	}
-	for _, folder := range folders {
-		err := filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if !info.IsDir() {
-				log.Println("getting installed app: " + path)
-				appFiles = append(appFiles, path)
-			}
-			return nil
-		})
-		if err != nil {
-			log.Println(err)
-			return appFiles, err
-		}
-	}
-	return appFiles, nil
+	return []string{}
 }
 
 func createGetProgramsFunc() AgentFunction {
 	invoke := func(w fyne.Window, call openai.ChatCompletionMessageToolCall) openai.ChatCompletionMessageParamUnion {
-		apps, err := getUserApps()
+		apps, err := getFiles(getProgramShortcutPaths())
 		if err != nil {
 			log.Println("could not get user apps for agent function")
 			log.Println(err)
