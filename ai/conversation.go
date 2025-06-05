@@ -47,6 +47,7 @@ func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMe
 		dialog.ShowError(err, w)
 		log.Println("could not generate chat completion")
 		log.Println(err)
+		return ""
 	}
 
 	choice := completion.Choices[0]

@@ -40,7 +40,7 @@ func createOpenFunc() AgentFunction {
 	param := openai.FunctionDefinitionParam{
 		Name:        "open",
 		Strict:      openai.Bool(true),
-		Description: openai.String("Opens either a URL or a file path/app shortcut path in the appropriate application."),
+		Description: openai.String("Opens either a URL or a file path/app shortcut path in the appropriate application. Before opening any file path or app shortcut, you must first use either get_files or get_programs function to find the exact path of the file that the user needs."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
 			"properties": map[string]any{
