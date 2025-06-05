@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +17,7 @@ type Location struct {
 
 func GetLocation() (Location, error) {
 	if userLocation != nil {
+		log.Println("using cached user location")
 		return *userLocation, nil
 	}
 

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -19,6 +20,7 @@ var forecastCached *forecastCache
 
 func GetCurrentWeather() (*locationforecast.GeoJson, error) {
 	if forecastCached != nil && forecastCached.expiry.Before(time.Now()) {
+		log.Println("fetching weather data - no living cached forecast")
 		return forecastCached.data, nil
 	}
 
@@ -27,6 +29,8 @@ func GetCurrentWeather() (*locationforecast.GeoJson, error) {
 		return nil, err
 	}
 	forecast, _, err := locationforecast.GetCompact(yrNoClient, location.Latitude, location.Longitude)
-	forecastCached = &forecastCache{forecast, time.Now().Add(10 * time.Minute)}
+	forecastCached = &forecastCache{forecast, time.Now().Add(30 * time.Minute)}
+	log.Printf("caching weather forecast until %s\n", forecastCached.expiry)
+	
 	return forecast, err
 }

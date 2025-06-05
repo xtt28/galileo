@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	"github.com/xtt28/galileo/agent"
@@ -28,7 +29,7 @@ func NewConversation(apiKey string) Conversation {
 		context.Background(),
 		openai.ChatCompletionNewParams{
 			Messages: []openai.ChatCompletionMessageParamUnion{
-				openai.DeveloperMessage("You are a helpful assistant."),
+				openai.DeveloperMessage("You are a helpful assistant and part of the program Project Galileo. Answer concisely - you are in a conversation with a user."),
 			},
 			Seed:  openai.Int(1),
 			Model: ConversationModel,
@@ -43,8 +44,9 @@ func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMe
 
 	completion, err := c.OpenAIClient.Chat.Completions.New(c.Context, c.Param)
 	if err != nil {
-		// TODO: Improve error handling.
-		log.Fatal(err)
+		dialog.ShowError(err, w)
+		log.Println("could not generate chat completion")
+		log.Println(err)
 	}
 
 	choice := completion.Choices[0]
@@ -56,7 +58,7 @@ func (c *Conversation) SendMessage(w fyne.Window, prompt openai.ChatCompletionMe
 		for _, call := range choice.Message.ToolCalls {
 			fun, ok := agent.FunctionForName(call.Function.Name)
 			if !ok {
-				panic("no function with name " + call.Function.Name)
+				log.Panic("agent attempted to call nonexistent function " + call.Function.Name)
 			}
 			toolRes := fun.Invoke(w, call)
 			content += "\n" + c.SendMessage(w, toolRes)

@@ -1,6 +1,8 @@
 package agent
 
 import (
+	"log"
+
 	"fyne.io/fyne/v2"
 	"github.com/openai/openai-go"
 )
@@ -18,6 +20,7 @@ func FunctionForName(name string) (fn AgentFunction, ok bool) {
 }
 
 func registerFunction(name string, fn AgentFunction) {
+	log.Printf("registering agent function %s\n", name)
 	registeredFunctions[name] = fn
 }
 

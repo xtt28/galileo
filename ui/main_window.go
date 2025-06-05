@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"log"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
@@ -22,6 +24,7 @@ type MainWindow struct {
 }
 
 func CreateMainWindow(apiKey string, a fyne.App) MainWindow {
+	log.Println("creating main window")
 	w := a.NewWindow("Galileo")
 	w.Resize(fyne.Size{Width: 300, Height: 600})
 
@@ -42,6 +45,7 @@ func (mw *MainWindow) AppendMessage(msg renderableMessage) {
 }
 
 func (mw *MainWindow) AddWidgets() {
+	log.Println("adding widgets to main window")
 	mw.msgBox = container.NewVBox()
 	msgScroll := container.NewScroll(mw.msgBox)
 	mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, "Hi there."})

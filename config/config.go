@@ -24,7 +24,9 @@ func GetConfigPath() string {
 		log.Fatal("could not open user config directory", err)
 	}
 
-	return path.Join(confDir, appDataDirName, configFileName)
+	confPath := path.Join(confDir, appDataDirName, configFileName)
+	log.Printf("user config directory: %s\n", confPath)
+	return confPath
 }
 
 // ReadConfig reads the configuration file from the preset configuration
@@ -39,6 +41,7 @@ func ReadConfig() (config GalileoConfig) {
 	if err != nil {
 		log.Fatal("could not parse configuration file", err)
 	}
+	log.Println("parsed configuration file")
 
 	return
 }
