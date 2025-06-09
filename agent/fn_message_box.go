@@ -20,7 +20,7 @@ func createMessageBoxFunc() AgentFunction {
 	param := openai.FunctionDefinitionParam{
 		Name:        "message_box",
 		Strict:      openai.Bool(true),
-		Description: openai.String("Shows a GUI message box to the user with the given text."),
+		Description: openai.String("Shows a GUI message box to the user with the given text. Do not use unless explicitly told to do so."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
 			"properties": map[string]any{
