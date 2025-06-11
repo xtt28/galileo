@@ -44,4 +44,5 @@ func RegisterAllFunctions() {
 	registerFunction("get_files", createShowFilesFunc())
 	registerFunction("read_file", createReadFileFunc())
 	registerFunction("create_file", createCreateFileFunc())
+	registerFunction("web_search", createWebSearchFunc())
 }
