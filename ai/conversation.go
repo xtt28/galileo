@@ -2,7 +2,9 @@ package ai
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
@@ -19,17 +21,28 @@ type Conversation struct {
 	Param        openai.ChatCompletionNewParams
 }
 
+const systemPromptFormat = `You are a helpful assistant and part of the program
+Project Galileo. Answer concisely - you are in a conversation with a user. The
+current date is %s. Adhere to these guidelines in all your responses:
+- For questions related to any current situations, use the web search function.
+- If you are opening a file, you may only open files in the user's document folder.
+- All files in the user's document folder can be fetched by the respective function.
+- Do not open any files or show a message box if the user does not explicitly request
+  it.`
+
 func NewConversation(apiKey string) Conversation {
 	client := openai.NewClient(
 		option.WithAPIKey(apiKey),
 	)
 
+	prompt := fmt.Sprintf(systemPromptFormat, time.Now().String())
+	
 	conversation := Conversation{
 		client,
 		context.Background(),
 		openai.ChatCompletionNewParams{
 			Messages: []openai.ChatCompletionMessageParamUnion{
-				openai.DeveloperMessage("You are a helpful assistant and part of the program Project Galileo. Answer concisely - you are in a conversation with a user."),
+				openai.DeveloperMessage(prompt),
 			},
 			Seed:  openai.Int(1),
 			Model: ConversationModel,
