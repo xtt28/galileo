@@ -8,7 +8,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"github.com/openai/openai-go"
-	
+
 	"encoding/json"
 )
 
@@ -64,7 +64,7 @@ func createShowFilesFunc() AgentFunction {
 		Description: openai.String("Gives a list of paths to all of the files in the user's documents directory. The document directory is searched recursively."),
 		Parameters: openai.FunctionParameters{
 			"type":                 "object",
-			"properties": map[string]any{},
+			"properties":           map[string]any{},
 			"additionalProperties": false,
 		},
 	}

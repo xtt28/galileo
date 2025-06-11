@@ -21,7 +21,8 @@ func createReadFileFunc() AgentFunction {
 			called = true
 			all = allowed
 		}, w)
-		for !called {}		
+		for !called {
+		}
 		if !all {
 			log.Printf("user did not allow to read file %s\n", path)
 			return openai.ToolMessage(`{"success":false,"description":"User did not allow you to access file."}`, call.ID)
@@ -44,15 +45,15 @@ func createReadFileFunc() AgentFunction {
 	}
 
 	param := openai.FunctionDefinitionParam{
-		Name: "read_file",
-		Strict: openai.Bool(true),
+		Name:        "read_file",
+		Strict:      openai.Bool(true),
 		Description: openai.String("Reads the text from the file at the path specified. The user will be asked for permission to read the file before it is read."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
 			"properties": map[string]any{
 				"path": map[string]any{"type": "string"},
 			},
-			"required": []string{"path"},
+			"required":             []string{"path"},
 			"additionalProperties": false,
 		},
 	}

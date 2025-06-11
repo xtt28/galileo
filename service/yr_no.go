@@ -31,6 +31,6 @@ func GetCurrentWeather() (*locationforecast.GeoJson, error) {
 	forecast, _, err := locationforecast.GetCompact(yrNoClient, location.Latitude, location.Longitude)
 	forecastCached = &forecastCache{forecast, time.Now().Add(30 * time.Minute)}
 	log.Printf("caching weather forecast until %s\n", forecastCached.expiry)
-	
+
 	return forecast, err
 }

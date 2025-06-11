@@ -4,6 +4,7 @@ go 1.24.2
 
 require (
 	fyne.io/fyne/v2 v2.6.1
+	github.com/chromedp/chromedp v0.13.6
 	github.com/openai/openai-go v0.1.0-beta.10
 	github.com/zapling/yr.no-golang-client v0.0.0-20210309083036-f048e27db764
 )
@@ -12,7 +13,6 @@ require (
 	fyne.io/systray v1.11.0 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/chromedp/cdproto v0.0.0-20250530212709-4dcc110a7b92 // indirect
-	github.com/chromedp/chromedp v0.13.6 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.0 // indirect

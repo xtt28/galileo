@@ -37,13 +37,13 @@ func createWebGetFunc() AgentFunction {
 			return openai.ToolMessage(`{"success":false,"error":"could not access url"}`, call.ID)
 		}
 		log.Println("received url results")
-		
+
 		return openai.ToolMessage(res, call.ID)
 	}
 
 	param := openai.FunctionDefinitionParam{
-		Name: "web_get",
-		Strict: openai.Bool(true),
+		Name:        "web_get",
+		Strict:      openai.Bool(true),
 		Description: openai.String("Gets the text from a webpage at the given address."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
@@ -51,7 +51,7 @@ func createWebGetFunc() AgentFunction {
 				"url": map[string]any{"type": "string"},
 			},
 			"additionalProperties": false,
-			"required": []string{"url"},
+			"required":             []string{"url"},
 		},
 	}
 

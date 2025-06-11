@@ -34,13 +34,13 @@ func createWebSearchFunc() AgentFunction {
 			return openai.ToolMessage(`{"success":false,"error":"could not run search"}`, call.ID)
 		}
 		log.Println("received search query results")
-		
+
 		return openai.ToolMessage(res, call.ID)
 	}
 
 	param := openai.FunctionDefinitionParam{
-		Name: "web_search",
-		Strict: openai.Bool(true),
+		Name:        "web_search",
+		Strict:      openai.Bool(true),
 		Description: openai.String("Searches the web for the given query and returns the result page."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
@@ -48,7 +48,7 @@ func createWebSearchFunc() AgentFunction {
 				"query": map[string]any{"type": "string"},
 			},
 			"additionalProperties": false,
-			"required": []string{"query"},
+			"required":             []string{"query"},
 		},
 	}
 

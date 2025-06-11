@@ -36,7 +36,7 @@ func NewConversation(apiKey string) Conversation {
 	)
 
 	prompt := fmt.Sprintf(systemPromptFormat, time.Now().String())
-	
+
 	conversation := Conversation{
 		client,
 		context.Background(),

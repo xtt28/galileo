@@ -29,25 +29,24 @@ func createCreateFileFunc() AgentFunction {
 			log.Println(err)
 			return openai.ToolMessage(`{"success":false,"message":"Could not write to file."}`, call.ID)
 		}
-		
+
 		return openai.ToolMessage(`{"success":true}`, call.ID)
 	}
 
 	param := openai.FunctionDefinitionParam{
-		Name: "create_file",
-		Strict: openai.Bool(true),
+		Name:        "create_file",
+		Strict:      openai.Bool(true),
 		Description: openai.String("Creates a file in the given path with the given content. The path is relative to the user's documents folder."),
 		Parameters: openai.FunctionParameters{
 			"type": "object",
 			"properties": map[string]any{
-				"path": map[string]any{"type": "string"},
+				"path":    map[string]any{"type": "string"},
 				"content": map[string]any{"type": "string"},
 			},
-			"required": []string{"path", "content"},
+			"required":             []string{"path", "content"},
 			"additionalProperties": false,
 		},
 	}
-
 
 	return AgentFunction{param, invoke}
 }
