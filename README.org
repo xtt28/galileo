@@ -1,12 +1,91 @@
-#+TITLE: Galileo
+#+TITLE: Welcome to Project Galileo's source repository.
 #+AUTHOR: xtt28
 
-** Project Description
+Project Galileo is an intelligent AI agent that can interact with your computer
+and help you with day-to-day tasks, including browsing, searching files, and
+more.
 
-An intelligent AI assistant that runs on your computer and can help you with
-day-to-day tasks, including browsing, searching files, and more.
+** Get started on your own device
+
+*** Cloning/downloading
+
+Clone these sources by clicking the green Code button above the file list.
+
+**** Building from source
+
+If you build from source, you must have the Go toolchain installed on your system.
+Run ~go run .~ in your terminal to compile and run the software, or ~go build .~
+to build a binary.
+
+**** Pre-compiled releases
+
+At the moment, there are no pre-compiled releases available.
+
+*** OpenAI API
+
+At the moment, this application depends on the OpenAI API. Create an OpenAI API
+key and ensure that your account has a sufficient amount of credits. In the
+following step, you will set up your OpenAI API key to be used by this
+application.
+
+*** Configuration
+
+You will need to create a configuration file before launching. The configuration
+file should be located in the following location:
+
+- *On Windows:* ~%APPDATA%\io.github.xtt28.galileo\config.json~
+- *On macOS:* ~\~/Library/Application Support/io.github.xtt28.galileo/config.json~
+- *On Linux:* ~\~/.config/io.github.xtt28.galileo/config.json~
+
+Sample configuration file contents:
+#+BEGIN_SRC json
+  {
+      "openAIKey": "sk-proj-......"
+  }
+#+END_SRC
+
+** Features of Project Galileo
+
+*** General
+
+- The user can have a conversation with the AI via a graphical desktop
+  application.
+
+*** Filesystem
+
+- The agent can read text files in the filesystem.
+  - Before the agent is allowed to read the contents of a file in the filesystem,
+    the user's permission is asked first via a dialog box.
+- The agent can create text files in the filesystem.
+- The agent can view the contents of the user's documents folder.
+- The agent can open any file in its default program on the OS at request.
+
+*** Applications
+
+- The agent can view a list of the user's installed desktop applications.
+- The agent can open any of these applications at request.
+
+*** Web & Realtime
+
+- The agent can get the weather forecast in the user's current location.
+- The agent can search the web for a specific query via DuckDuckGo.
+- The agent can use a headless Chromium browser to access and read web pages.
+
+** Technological details
+
+- The application uses Fyne, a cross-platform GUI toolkit built for Go.
+- The official OpenAI API wrapper for Go is used for chat completions. By
+  default, the application uses GPT 4o-mini.
+  - The OpenAI API tool calling feature is used to enable agent functionality.
+- The Norwegian Meteorological Institute public API is used for getting real-time
+  weather data.
+- The agent uses headless Chromium via the ~chromedp~ package to access web pages.
+- To search the web, the agent uses headless Chromium as described above with the
+  HTML version of DuckDuckGo ([[https://html.duckduckgo.com/html]]).
+- To get the user's location for weather forecast purposes, the public API
+  [[https://ip-api.com/json]] is used.
 
 ** License
 
-GNU General Public License, v3.0 or later. See the LICENSE.md file for more
-details.
+This software is licensed under GNU General Public License, v3.0 or later. See
+the LICENSE.md file for more details.
