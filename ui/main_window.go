@@ -62,6 +62,8 @@ func (mw *MainWindow) AddWidgets() {
 			response := mw.Conversation.SendMessage(mw.Window, openai.UserMessage(msg))
 			fyne.Do(func() {
 				mw.AppendMessage(renderableMessage{openai.MessageRoleAssistant, response})
+				msgScroll.Offset.Y = msgScroll.Content.MinSize().Height - msgScroll.Size().Height
+				msgScroll.Base.Refresh()
 			})
 		}()
 	})
