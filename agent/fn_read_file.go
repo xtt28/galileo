@@ -35,7 +35,7 @@ func createReadFileFunc() AgentFunction {
 			return openai.ToolMessage(`{"success":false,"description":"Could not access the file."}`, call.ID)
 		}
 
-		marshaled, err := json.Marshal(map[string]any{"success": true, "fileData": fileData})
+		marshaled, err := json.Marshal(map[string]any{"success": true, "fileData": string(fileData)})
 		if err != nil {
 			log.Println("could not serialize tool response to JSON")
 			log.Println(err)
